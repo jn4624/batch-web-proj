@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: batch-web-proj
+  datasource:
+    url: jdbc:mysql://localhost:3306/batch_local?zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: batch_local_user
+    password: batchlocal123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    cache: false

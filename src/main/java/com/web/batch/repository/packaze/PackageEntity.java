@@ -1,0 +1,23 @@
+package com.web.batch.repository.packaze;
+
+import com.web.batch.repository.BaseEntity;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import javax.persistence.*;
+
+@Getter
+@Setter
+@ToString
+@Entity
+@Table(name = "package")
+public class PackageEntity extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본 키 생성을 DB에 위임한다. (AUTO_INCREMENT)
+    private Integer packageSeq;
+
+    private String packageName;
+    private Integer count;
+    private Integer period;
+}
