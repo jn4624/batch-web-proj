@@ -2,14 +2,15 @@ package com.web.batch.controller.admin;
 
 import com.web.batch.service.packaze.PackageService;
 import com.web.batch.service.pass.BulkPassService;
+import com.web.batch.service.statistics.StatisticsService;
 import com.web.batch.service.user.UserGroupMappingService;
+import com.web.batch.util.LocalDateTimeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.time.LocalDateTime;
 
 /**
  * 관리자가 이용권 일괄 지급을 위한 정보를 등록하는 페이지를 반환하기 위한 컨트롤러
@@ -20,11 +21,24 @@ public class AdminViewController {
     private final BulkPassService bulkPassService;
     private final PackageService packageService;
     private final UserGroupMappingService userGroupMappingService;
+    private final StatisticsService statisticsService;
 
-    public AdminViewController(BulkPassService bulkPassService, PackageService packageService, UserGroupMappingService userGroupMappingService) {
+    public AdminViewController(BulkPassService bulkPassService, PackageService packageService, UserGroupMappingService userGroupMappingService, StatisticsService statisticsService) {
         this.bulkPassService = bulkPassService;
         this.packageService = packageService;
         this.userGroupMappingService = userGroupMappingService;
+        this.statisticsService = statisticsService;
+    }
+
+    @GetMapping
+    public ModelAndView home(ModelAndView modelAndView, @RequestParam("to") String toString) {
+        LocalDateTime to = LocalDateTimeUtils.parseDate(toString);
+
+        // chartData 를 조회한다(라벨, 출석 횟수, 취소 횟수).
+        modelAndView.addObject("chartData", statisticsService.makeChartData(to));
+        modelAndView.setViewName("admin/index");
+
+        return modelAndView;
     }
 
     @GetMapping("/bulk-pass")
